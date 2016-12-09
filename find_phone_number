@@ -52,7 +52,7 @@ def phoneAndEmail(file_path):
 
         print 'The final list of all found emails are:' + str(matched_email)
 
-    contact_file = open('contacts', 'r')
+    contact_file = open(file_path, 'r')
     for line in contact_file:
         for groups in phone_regex.findall(line):
             matched_phone.append(groups[0])
