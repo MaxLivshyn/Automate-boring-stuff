@@ -62,3 +62,29 @@ def phoneAndEmail(file_path):
     else:
 
         print 'The final list of all found phone numbers are:' + str(matched_phone)
+
+'Finding the websites that have http or https'
+
+def testHttpAndHttps(file_path):
+
+    https_https_regx_patt = re.compile('((http://.*$)|(https://.*$))')
+    match_http = []
+    match_https = []
+
+    test_file = open(file_path, 'r')
+    for line in test_file:
+        for group in https_https_regx_patt.findall(line):
+            if group[1] != '':
+                match_http.append(group[1])
+            if group[2] != '':
+                match_https.append(group[2])
+
+    if len(match_http) < 1:
+        print 'no http match has been found'
+    else:
+        print match_http
+
+    if len(match_https) < 1:
+        print 'no https match has been found'
+    else:
+        print match_https
