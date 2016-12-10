@@ -88,3 +88,80 @@ def testHttpAndHttps(file_path):
         print 'no https match has been found'
     else:
         print match_https
+
+
+''' Find dates in different date formats'''
+
+def find_date_diff_format(file_path):
+
+    date_regx = re.compile('(\d|\d{2}|\d{4})([-\s./])(\d{1,2})([-\s./])(\d{2,4})')
+    match_dates = []
+
+    target_file = open(file_path,'r')
+    for line in target_file:
+        for group in date_regx.findall(line):
+            match_dates.append(group[0] + group[1] + group[2] + group[3] + group[4])
+
+    return match_dates
+
+''' Remove sensitive information such as Social Security or credit card numbers '''
+
+def remove_security_info(file_path):
+    secur_info_regx = re.compile('(Social Security number is \d+)|(Credit card number is \d+)', re.IGNORECASE)
+    matched_data = []
+    subs_lst = []
+    target_file = open(file_path, 'r')
+    for line in target_file:
+        for group in secur_info_regx.findall(line):
+            if group[0] !='':
+                matched_data.append(group[0])
+            if group[1] != '':
+                matched_data.append(group[1])
+
+    for item in matched_data:
+        subs_lst.append(re.sub('\d+','*****', item))
+    print subs_lst
+
+
+''' Write a function that uses regular expressions to make sure the password string it is passed is strong '''
+
+def strength_password_detection():
+    '''
+    1. Password should have 12 length long
+    2. All characters should be alphanumeric
+    3. Password should have uppercase, lowercase and numbers'''
+    pass_length = re.compile('\w{12,}')
+    upper_case = re.compile('[A-Z]')
+    lower_case = re.compile('[a-z]')
+    digit_reg = re.compile('[0-9]')
+    spec_charac = re.compile('[@#$%^&+=.<>!]')
+
+    while True:
+        print 'Please enter your password:\n '
+        passw_entered_by_user = raw_input()
+        is_password_strength = True
+
+        if len(passw_entered_by_user) < 12:
+            print 'Password should be at least 12 length long'
+            is_password_strength = False
+
+        if upper_case.search(passw_entered_by_user) is None:
+            print 'Password should have upper case letters'
+            is_password_strength = False
+
+        if lower_case.search(passw_entered_by_user) is None:
+            print 'Password should have lower case letters'
+            is_password_strength = False
+
+        if digit_reg.search(passw_entered_by_user) is None:
+            print 'Password should have digits'
+            is_password_strength = False
+
+        if spec_charac.search(passw_entered_by_user) is None:
+            print 'Password should have special character'
+            is_password_strength = False
+
+        if is_password_strength:
+            break
+
+    print 'Your password is strong enough : ' + passw_entered_by_user
